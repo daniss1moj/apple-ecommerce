@@ -3,8 +3,30 @@ import Image from 'next/image';
 import Header from '../components/Header';
 import Landing from '../components/Landing';
 import { Tab } from '@headlessui/react';
+import { GetServerSideProps } from 'next';
+import { fetchCategories } from '../utils/fetchCategories';
+import { fetchProducts } from '../utils/fetchProducts';
+import Product from '../components/Product';
+import Basket from '../components/Basket';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
-export default function Home() {
+interface Props {
+	categories: Category[];
+	products: Product[];
+}
+
+export default function Home({ categories, products }: Props) {
+	const showProducts = (category: number) => {
+		return products
+			.filter((product) => product.category._ref === categories[category]._id)
+			.map((product) => {
+				return <Product key={product._id} product={product} />;
+			});
+	};
+
+	const [basket, setBasket] = useState(false);
+
 	return (
 		<div>
 			<Head>
@@ -14,11 +36,16 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
+			<Basket active={basket} />
 			<main className="relative h-[200vh] bg-[#e7ecee]">
 				<Landing />
 			</main>
 			<section className="relative z-40 -mt-[100vh] min-h-screen bg-[#1B1B1B]">
-				<div className="space-y-10 p-16">
+				<motion.div
+					className="space-y-10 p-16"
+					onViewportEnter={() => setBasket(true)}
+					onViewportLeave={() => setBasket(false)}
+					viewport={{ amount: 0.1 }}>
 					<h1
 						className="text-center text-4xl font-medium tracking-wide
         text-white md:text-5xl">
@@ -26,19 +53,44 @@ export default function Home() {
 					</h1>
 					<Tab.Group>
 						<Tab.List className="flex justify-center">
-							<Tab>Tab 1</Tab>
-							<Tab>Tab 2</Tab>
-							<Tab>Tab 3</Tab>
+							{categories.map((category) => {
+								return (
+									<Tab
+										key={category._id}
+										id={category._id}
+										className={({ selected }) => {
+											return `whitespace-nowrap rounded-t-lg py-3 px-5 text-sm font-light outline-none md:py-4 md:px-6 md:text-base ${
+												selected
+													? 'borderGradient bg-[#35383c] text-white'
+													: 'border-b-2 border-[#35383c] text-[#747474]'
+											}`;
+										}}>
+										{category.title}
+									</Tab>
+								);
+							})}
 						</Tab.List>
 						<Tab.Panels className="mx-auto max-w-fit pt-10 pb-24 sm:px-4">
-							<Tab.Panel className="tabPanel">Content 1</Tab.Panel>
-							<Tab.Panel className="tabPanel">Content 2</Tab.Panel>
-							<Tab.Panel className="tabPanel">Content 3</Tab.Panel>
-							<Tab.Panel className="tabPanel">Content 4</Tab.Panel>
+							<Tab.Panel className="tabPanel">{showProducts(0)}</Tab.Panel>
+							<Tab.Panel className="tabPanel">{showProducts(1)}</Tab.Panel>
+							<Tab.Panel className="tabPanel">{showProducts(2)}</Tab.Panel>
+							<Tab.Panel className="tabPanel">{showProducts(3)}</Tab.Panel>
 						</Tab.Panels>
 					</Tab.Group>
-				</div>
+				</motion.div>
 			</section>
 		</div>
 	);
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+	const categories = await fetchCategories();
+	const products = await fetchProducts();
+
+	return {
+		props: {
+			categories,
+			products,
+		},
+	};
+};

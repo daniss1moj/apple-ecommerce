@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 
 interface IButton {
 	title: string;
@@ -40,4 +41,4 @@ const Button = ({ title, onClick, width, loading, padding, noIcon }: IButton) =>
 	);
 };
 
-export default Button;
+export default dynamic(() => Promise.resolve(Button), { ssr: false });
