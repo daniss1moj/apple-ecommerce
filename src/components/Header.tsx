@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { ShoppingBagIcon, UserIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
 import { selectBasketItems } from '../redux/basketSlice';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Header = () => {
-	const session = false;
+	const { data: session } = useSession();
 	const items = useSelector(selectBasketItems);
 	return (
 		<header className="sticky top-0 z-30 flex w-full items-center justify-between bg-[#e7ecee] p-4">
@@ -42,19 +43,17 @@ const Header = () => {
 				{session ? (
 					<Image
 						src={
-							// session.user?.image ||
+							session.user?.image ||
 							'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=2000'
 						}
 						alt="avatar"
 						width={34}
 						height={34}
-						// onClick={() => signOut()}
+						onClick={() => signOut()}
+						className="cursor-pointer rounded-full"
 					/>
 				) : (
-					<UserIcon
-						className="headerIcon"
-						// onClick={() => signIn()}
-					/>
+					<UserIcon className="headerIcon" onClick={() => signIn()} />
 				)}
 			</div>
 		</header>
