@@ -30,10 +30,11 @@
     "sanity-plugin-hotspot-array": "^1.0.0",
     "sanity-plugin-media": "^2.0.2",
     "slug": "^8.2.2",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^2.0.1",
+    "@types/styled-components": "^5.1.26",
     "eslint": "^8.6.0",
     "prettier": "^2.8.3",
     "typescript": "^4.0.0"
