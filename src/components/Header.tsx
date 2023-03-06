@@ -14,7 +14,7 @@ const Header = () => {
 				<Link href="/">
 					<div className="relative  h-10 w-5 cursor-pointer opacity-75 transition hover:opacity-100 ">
 						<Image
-							src="https://rb.gy/vsvv2o"
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png"
 							alt="logo"
 							fill
 							style={{
