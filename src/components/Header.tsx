@@ -12,16 +12,9 @@ const Header = () => {
 		<header className="sticky top-0 z-30 flex w-full items-center justify-between bg-[#e7ecee] p-4">
 			<div className="flex items-center justify-center md:w-1/5">
 				<Link href="/">
-					<div className="relative  h-10 w-5 cursor-pointer opacity-75 transition hover:opacity-100 ">
-						<Image
-							src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png"
-							alt="logo"
-							fill
-							style={{
-								objectFit: 'contain',
-							}}
-						/>
-					</div>
+					<p className="relative cursor-pointer text-lg font-bold  transition hover:text-pink-600">
+						Apple Shop
+					</p>
 				</Link>
 			</div>
 			<div className="hidden flex-1 items-center justify-center gap-x-8 md:flex">
